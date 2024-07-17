@@ -1,6 +1,9 @@
 import { fieldItemModel } from '@/entities/field-item';
+import { getPath } from '@/features/build-short-path/model/get-path.ts';
 
-export const bfs = (fieldsItem: fieldItemModel.FieldItem[][], changeFieldItem: fieldItemModel.ChangeFieldItem) => {
+export const bfs = (fieldsItem: fieldItemModel.FieldItem[][]) => {
+    const renderingSteps = [fieldsItem];
+
     const startItem = fieldItemModel.getStartFieldItem(fieldsItem);
 
     const endItem = fieldItemModel.getEndFieldItem(fieldsItem);
@@ -11,7 +14,7 @@ export const bfs = (fieldsItem: fieldItemModel.FieldItem[][], changeFieldItem: f
 
     const queue: fieldItemModel.FieldItem[] = [startItem];
 
-    const passed = new Set<string>();
+    const passed = new Set<string>([startItem.id]);
 
     const pathToEnd: Record<string, string | null> = {
         [startItem.id]: null,
@@ -20,8 +23,22 @@ export const bfs = (fieldsItem: fieldItemModel.FieldItem[][], changeFieldItem: f
     while (queue.length > 0) {
         const currentFieldItem = queue.shift();
 
-        passed.add(currentFieldItem.id);
-        changeFieldItem(currentFieldItem.id, { isPassed: true });
+        const lastStep = renderingSteps[renderingSteps.length - 1];
+
+        renderingSteps.push(
+            lastStep.map((cols) =>
+                cols.map((item) => {
+                    if (item.id === currentFieldItem.id) {
+                        return {
+                            ...item,
+                            isPassed: true,
+                        };
+                    }
+
+                    return { ...item };
+                }),
+            ),
+        );
 
         if (currentFieldItem.id === endItem.id) {
             break;
@@ -32,17 +49,33 @@ export const bfs = (fieldsItem: fieldItemModel.FieldItem[][], changeFieldItem: f
         );
 
         nextItems.forEach((item) => {
+            passed.add(item.id);
             pathToEnd[item.id] = currentFieldItem.id;
         });
 
         queue.push(...nextItems);
     }
 
-    const endPath = Object.keys(pathToEnd).find((key) => key === endItem.id);
-    let startPath = pathToEnd[endPath] ?? null;
+    const path = getPath(pathToEnd, endItem.id);
 
-    while (startPath !== null) {
-        changeFieldItem(startPath, { isAddedToPath: true });
-        startPath = pathToEnd[startPath];
-    }
+    path.filter((idPath) => idPath !== startItem.id && idPath !== endItem.id).forEach((idPath) => {
+        const lastStep = renderingSteps[renderingSteps.length - 1];
+
+        renderingSteps.push(
+            lastStep.map((cols) =>
+                cols.map((item) => {
+                    if (item.id === idPath) {
+                        return {
+                            ...item,
+                            isAddedToPath: true,
+                        };
+                    }
+
+                    return { ...item };
+                }),
+            ),
+        );
+    });
+
+    return renderingSteps;
 };

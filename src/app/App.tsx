@@ -1,5 +1,5 @@
 import { FormSelectFieldSize, createFormModel } from '@/features/select-field-size';
-import { FieldCanvas, paintFieldModel } from '@/features/paint-field';
+import { FieldCanvas, drawFieldModel } from '@/features/draw-field';
 import { fieldContextMenuModel } from '@/features/open-context-menu';
 import { FormSelectAlgorithm, buildShortPathModel } from '@/features/build-short-path';
 import { fieldItemModel } from '@/entities/field-item';
@@ -9,12 +9,12 @@ export const App = () => {
     const { fieldSize, selectFieldSize, resetFieldSize } = createFormModel.useSelectFieldSize();
 
     const { fieldItems, changeFieldItem } = fieldItemModel.useFieldItems(
-        paintFieldModel.CANVAS_WIDTH,
-        paintFieldModel.CANVAS_HEIGHT,
+        drawFieldModel.CANVAS_WIDTH,
+        drawFieldModel.CANVAS_HEIGHT,
         fieldSize,
     );
 
-    const { ref } = paintFieldModel.usePaintField(fieldItems);
+    const { ref, drawFieldWithAwait } = drawFieldModel.useDrawField(fieldItems);
 
     const {
         configMenu: { isOpen, ...configMenu },
@@ -22,7 +22,7 @@ export const App = () => {
         closeContextMenu,
     } = fieldContextMenuModel.useContextMenu(fieldSize, fieldItems, changeFieldItem);
 
-    const { buildShortPath } = buildShortPathModel.useBuildShortPath(fieldItems, changeFieldItem);
+    const { buildShortPath, isDrawAlgorithm } = buildShortPathModel.useBuildShortPath(fieldItems, drawFieldWithAwait);
 
     return (
         <>
@@ -41,7 +41,7 @@ export const App = () => {
                             <ContextMenu open={isOpen} {...configMenu} />
                         </div>
                         <div className="p-5">
-                            <FormSelectAlgorithm onSubmit={buildShortPath} />
+                            <FormSelectAlgorithm onSubmit={buildShortPath} disabled={isDrawAlgorithm} />
                         </div>
                     </section>
                 )}

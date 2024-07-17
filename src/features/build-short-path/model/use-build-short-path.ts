@@ -3,18 +3,15 @@ import { bfs } from './bfs.ts';
 import { dfs } from './dfs.ts';
 import { dijkstra } from './dijkstra.ts';
 import { aStar } from './a-star.ts';
+import { useState } from 'react';
 
 export const useBuildShortPath = (
     fieldItems: fieldItemModel.FieldItem[][],
-    changeFieldItem: fieldItemModel.ChangeFieldItem,
+    drawFieldWithAwait: fieldItemModel.DrawFieldWithAwait,
 ) => {
-    const buildShortPath = (algorithm: string) => {
-        fieldItems.forEach((cols) => {
-            cols.forEach((item) => {
-                changeFieldItem(item.id, { isPassed: false, isAddedToPath: false });
-            });
-        });
+    const [isDrawAlgorithm, setDrawAlgorithm] = useState(false);
 
+    const buildShortPath = async (algorithm: string) => {
         if (!fieldItems?.some((col) => col.some(({ isStart }) => isStart))) {
             alert('Не задана точка начала.');
             return;
@@ -25,16 +22,28 @@ export const useBuildShortPath = (
             return;
         }
 
+        let renderingSteps: fieldItemModel.FieldItem[][][] | null = null;
+
         if (algorithm === 'bfs') {
-            bfs(fieldItems, changeFieldItem);
+            renderingSteps = bfs(fieldItems);
         } else if (algorithm === 'dfs') {
-            dfs(fieldItems, changeFieldItem);
+            renderingSteps = dfs(fieldItems);
         } else if (algorithm === 'dijkstra') {
-            dijkstra(fieldItems, changeFieldItem);
+            renderingSteps = dijkstra(fieldItems);
         } else if (algorithm === 'a-star') {
-            aStar(fieldItems, changeFieldItem);
+        //     aStar(fieldItems);
+        // }
+
+        if (renderingSteps !== null) {
+            setDrawAlgorithm(true);
+
+            for (const step of renderingSteps) {
+                await drawFieldWithAwait(step);
+            }
+
+            setDrawAlgorithm(false);
         }
     };
 
-    return { buildShortPath };
+    return { buildShortPath, isDrawAlgorithm };
 };

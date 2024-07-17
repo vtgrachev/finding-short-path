@@ -12,7 +12,7 @@ import {
 } from './const.ts';
 import { fieldItemModel } from '@/entities/field-item';
 
-export const paintField = (canvas: HTMLCanvasElement, field: fieldItemModel.FieldItem[][]) => {
+export const drawField = (canvas: HTMLCanvasElement, field: fieldItemModel.FieldItem[][]) => {
     const ctx = canvas.getContext('2d');
 
     ctx.reset();

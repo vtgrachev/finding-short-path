@@ -18,3 +18,5 @@ export type GetTargetIndex = (
     event: MouseEvent<HTMLCanvasElement>,
     fieldSize: number,
 ) => { indexRow: number; indexCol: number };
+
+export type DrawFieldWithAwait = (fieldItems: FieldItem[][]) => Promise<void>;

@@ -3,10 +3,11 @@ import { Button, Select } from '@/shared/ui';
 import { ALGORITHMS_FIND_SHORT_PATH } from './model';
 
 type Props = {
+    disabled?: boolean;
     onSubmit?: (algorithm: string, event: FormEvent<HTMLFormElement>) => void;
 };
 
-export const FormSelectAlgorithm: FunctionComponent<Props> = ({ onSubmit }) => {
+export const FormSelectAlgorithm: FunctionComponent<Props> = ({ onSubmit, disabled = false }) => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -27,7 +28,9 @@ export const FormSelectAlgorithm: FunctionComponent<Props> = ({ onSubmit }) => {
                 />
             </div>
             <div className="flex gap-2 p-5">
-                <Button type="submit">Запустить</Button>
+                <Button type="submit" disabled={disabled}>
+                    Запустить
+                </Button>
             </div>
         </form>
     );
