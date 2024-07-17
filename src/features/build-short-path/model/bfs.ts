@@ -24,8 +24,6 @@ export const bfs = (fieldsItem: fieldItemModel.FieldItem[][], changeFieldItem: f
         changeFieldItem(currentFieldItem.id, { isPassed: true });
 
         if (currentFieldItem.id === endItem.id) {
-            changeFieldItem(endItem.id, { isPassed: true });
-
             break;
         }
 
@@ -41,7 +39,7 @@ export const bfs = (fieldsItem: fieldItemModel.FieldItem[][], changeFieldItem: f
     }
 
     const endPath = Object.keys(pathToEnd).find((key) => key === endItem.id);
-    let startPath = pathToEnd[endPath];
+    let startPath = pathToEnd[endPath] ?? null;
 
     while (startPath !== null) {
         changeFieldItem(startPath, { isAddedToPath: true });
