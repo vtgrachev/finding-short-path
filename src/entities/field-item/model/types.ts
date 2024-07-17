@@ -7,10 +7,12 @@ export interface FieldItem {
     isStart: boolean;
     isEnd: boolean;
     isObstacle?: boolean;
+    isPassed?: boolean;
+    isAddedToPath?: boolean;
     cost?: number;
 }
 
-export type ChangeFieldItem = (indexRow: number, indexCol: number, change: Partial<FieldItem>) => void;
+export type ChangeFieldItem = (id: string, change: Partial<FieldItem>) => void;
 
 export type GetTargetIndex = (
     event: MouseEvent<HTMLCanvasElement>,

@@ -1,10 +1,12 @@
 import {
+    ADDED_FILL,
     COST_FONT_STYLE,
     COST_TEXT_ALIGN,
     DEFAULT_FILL,
     END_FILL,
     FONT_FILL,
     OBSTACLE_FILL,
+    PASSED_FILL,
     START_FILL,
     STROKE_STYLE,
 } from './const.ts';
@@ -22,8 +24,8 @@ export const paintField = (canvas: HTMLCanvasElement, field: fieldItemModel.Fiel
     field.forEach((cols) => {
         maxHeight = 0;
 
-        cols.forEach(({ width, height, isStart, isEnd, isObstacle, cost }) => {
-            ctx.fillStyle = DEFAULT_FILL;
+        cols.forEach(({ width, height, isStart, isEnd, isObstacle, cost, isPassed = false, isAddedToPath = false }) => {
+            ctx.fillStyle = isPassed ? PASSED_FILL : DEFAULT_FILL;
             ctx.fillRect(x, y, width, height);
 
             ctx.strokeStyle = STROKE_STYLE;
@@ -59,6 +61,14 @@ export const paintField = (canvas: HTMLCanvasElement, field: fieldItemModel.Fiel
                 ctx.fillStyle = FONT_FILL;
                 ctx.textAlign = COST_TEXT_ALIGN;
                 ctx.fillText(cost.toString(), x + width / 2, y + height / 2 + fontSize / 2, width);
+            }
+
+            if (isAddedToPath) {
+                ctx.beginPath();
+                ctx.fillStyle = ADDED_FILL;
+                ctx.arc(x + width / 2, y + height / 2, width / 10, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.closePath();
             }
 
             x += width;

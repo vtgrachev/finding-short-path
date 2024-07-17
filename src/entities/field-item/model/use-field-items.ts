@@ -11,22 +11,18 @@ export const useFieldItems = (widthField: number, heightField: number, fieldSize
         setFieldItems(createFieldItems(widthField, heightField, fieldSize));
     }, [widthField, heightField, fieldSize]);
 
-    const changeFieldItem: ChangeFieldItem = (indexRow, indexCol, change) => {
-        const changeItem = fieldItems?.[indexRow]?.[indexCol];
+    const changeFieldItem: ChangeFieldItem = (id: string, change) => {
+        setFieldItems((rows) =>
+            rows.map((cols) =>
+                cols.map((item) => {
+                    if (item.id === id) {
+                        return { ...item, ...change };
+                    }
 
-        if (changeItem) {
-            setFieldItems((rows) =>
-                rows.map((cols) =>
-                    cols.map((item) => {
-                        if (item.id === changeItem.id) {
-                            return { ...item, ...change };
-                        }
-
-                        return { ...item };
-                    }),
-                ),
-            );
-        }
+                    return { ...item };
+                }),
+            ),
+        );
     };
 
     return { fieldItems, changeFieldItem };

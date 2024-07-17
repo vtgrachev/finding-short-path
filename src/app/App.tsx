@@ -1,10 +1,9 @@
 import { FormSelectFieldSize, createFormModel } from '@/features/select-field-size';
 import { FieldCanvas, paintFieldModel } from '@/features/paint-field';
 import { fieldContextMenuModel } from '@/features/open-context-menu';
-import { FormSelectAlgorithm } from '@/features/build-short-path';
+import { FormSelectAlgorithm, buildShortPathModel } from '@/features/build-short-path';
 import { fieldItemModel } from '@/entities/field-item';
 import { ContextMenu } from '@/shared/ui';
-import { FormEvent } from 'react';
 
 export const App = () => {
     const { fieldSize, selectFieldSize, resetFieldSize } = createFormModel.useSelectFieldSize();
@@ -23,17 +22,7 @@ export const App = () => {
         closeContextMenu,
     } = fieldContextMenuModel.useContextMenu(fieldSize, fieldItems, changeFieldItem);
 
-    const onSubmit = (algorithm: string, event: FormEvent<HTMLFormElement>) => {
-        if (!fieldItems?.some((col) => col.some(({ isStart }) => isStart))) {
-            alert('Не задана точка начала.');
-            return;
-        }
-
-        if (!fieldItems?.some((col) => col.some(({ isEnd }) => isEnd))) {
-            alert('Не задана точка цели.');
-            return;
-        }
-    };
+    const { buildShortPath } = buildShortPathModel.useBuildShortPath(fieldItems, changeFieldItem);
 
     return (
         <>
@@ -52,7 +41,7 @@ export const App = () => {
                             <ContextMenu open={isOpen} {...configMenu} />
                         </div>
                         <div className="p-5">
-                            <FormSelectAlgorithm onSubmit={onSubmit} />
+                            <FormSelectAlgorithm onSubmit={buildShortPath} />
                         </div>
                     </section>
                 )}

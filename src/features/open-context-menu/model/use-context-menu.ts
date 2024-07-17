@@ -36,7 +36,7 @@ export const useContextMenu = (
                 id: 'delete-begin-point',
                 title: 'Убрать точку начала',
                 action: () => {
-                    changeFieldItem(indexRow, indexCol, { isStart: false });
+                    changeFieldItem(targetItem.id, { isStart: false });
 
                     closeContextMenu();
                 },
@@ -49,7 +49,7 @@ export const useContextMenu = (
                     id: 'add-begin-point',
                     title: 'Выбрать как точку начала',
                     action: () => {
-                        changeFieldItem(indexRow, indexCol, { isStart: true });
+                        changeFieldItem(targetItem.id, { isStart: true });
 
                         closeContextMenu();
                     },
@@ -62,7 +62,7 @@ export const useContextMenu = (
                 id: 'delete-end-point',
                 title: 'Убрать точку цели',
                 action: () => {
-                    changeFieldItem(indexRow, indexCol, { isEnd: false });
+                    changeFieldItem(targetItem.id, { isEnd: false });
 
                     closeContextMenu();
                 },
@@ -75,7 +75,7 @@ export const useContextMenu = (
                     id: 'add-end-point',
                     title: 'Выбрать как точку цели',
                     action: () => {
-                        changeFieldItem(indexRow, indexCol, { isEnd: true });
+                        changeFieldItem(targetItem.id, { isEnd: true });
 
                         closeContextMenu();
                     },
@@ -88,7 +88,7 @@ export const useContextMenu = (
                 id: targetItem.isObstacle ? 'delete-obstacle' : 'add-obstacle',
                 title: targetItem.isObstacle ? 'Удалить препятствие' : 'Добавить препятствие',
                 action: () => {
-                    changeFieldItem(indexRow, indexCol, { isObstacle: !targetItem.isObstacle });
+                    changeFieldItem(targetItem.id, { isObstacle: !targetItem.isObstacle });
 
                     closeContextMenu();
                 },
@@ -106,10 +106,10 @@ export const useContextMenu = (
                         if (Number.isNaN(cost)) {
                             alert('Стоимость указана не верно!');
                         } else {
-                            changeFieldItem(indexRow, indexCol, { cost });
+                            changeFieldItem(targetItem.id, { cost });
                         }
                     } else {
-                        changeFieldItem(indexRow, indexCol, { cost: undefined });
+                        changeFieldItem(targetItem.id, { cost: undefined });
                     }
 
                     closeContextMenu();
