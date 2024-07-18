@@ -30,7 +30,8 @@ export const useBuildShortPath = (
             renderingSteps = dfs(fieldItems);
         } else if (algorithm === 'dijkstra') {
             renderingSteps = dijkstra(fieldItems);
-        } else if (algorithm === 'a-star') {
+        }
+        // else if (algorithm === 'a-star') {
         //     aStar(fieldItems);
         // }
 

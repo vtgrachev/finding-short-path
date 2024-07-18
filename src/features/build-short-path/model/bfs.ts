@@ -8,13 +8,9 @@ export const bfs = (fieldsItem: fieldItemModel.FieldItem[][]) => {
 
     const endItem = fieldItemModel.getEndFieldItem(fieldsItem);
 
-    if (startItem === undefined || endItem === undefined) {
-        return;
-    }
-
     const queue: fieldItemModel.FieldItem[] = [startItem];
 
-    const passed = new Set<string>([startItem.id]);
+    const passed = new Set([startItem.id]);
 
     const pathToEnd: Record<string, string | null> = {
         [startItem.id]: null,
