@@ -1,4 +1,4 @@
-import React, { FormEvent, FunctionComponent } from 'react';
+import { FormEvent, FunctionComponent } from 'react';
 import { Button, Select } from '@/shared/ui';
 import { ALGORITHMS_FIND_SHORT_PATH } from './model';
 

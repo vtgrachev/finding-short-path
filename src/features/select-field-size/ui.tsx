@@ -1,4 +1,4 @@
-import React, { FormEvent, FunctionComponent } from 'react';
+import { FormEvent, FunctionComponent } from 'react';
 import { Button, Input } from '@/shared/ui';
 
 type Props = {

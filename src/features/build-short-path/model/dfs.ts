@@ -4,12 +4,16 @@ import { getPath } from '@/features/build-short-path/model/get-path.ts';
 export const dfs = (
     fieldsItem: fieldItemModel.FieldItem[][],
     startItem = fieldItemModel.getStartFieldItem(fieldsItem),
-    passed = new Set([startItem.id]),
-    pathToEnd = { [startItem.id]: null },
-) => {
+    passed = new Set([startItem?.id ?? '']),
+    pathToEnd: Record<string, string | null> = { [startItem?.id ?? '']: null },
+): fieldItemModel.FieldItem[][][] => {
     const endItem = fieldItemModel.getEndFieldItem(fieldsItem);
 
-    const renderingSteps = [];
+    if (startItem == null || endItem == null) {
+        return [];
+    }
+
+    const renderingSteps: fieldItemModel.FieldItem[][][] = [];
 
     renderingSteps.push(
         fieldsItem.map((cols) =>

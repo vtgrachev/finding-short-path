@@ -4,8 +4,6 @@ export const getPathsFieldItem = (fieldItems: FieldItem[][], startItem: FieldIte
     for (const indexRow in fieldItems) {
         for (const indexCol in fieldItems[indexRow]) {
             if (fieldItems[indexRow][indexCol].id === startItem.id) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
                 return [
                     fieldItems?.[Number(indexRow)]?.[Number(indexCol) + 1],
                     fieldItems?.[Number(indexRow) + 1]?.[Number(indexCol)],

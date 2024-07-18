@@ -15,6 +15,10 @@ import { fieldItemModel } from '@/entities/field-item';
 export const drawField = (canvas: HTMLCanvasElement, field: fieldItemModel.FieldItem[][]) => {
     const ctx = canvas.getContext('2d');
 
+    if (ctx === null) {
+        return;
+    }
+
     ctx.reset();
 
     let x = 0;

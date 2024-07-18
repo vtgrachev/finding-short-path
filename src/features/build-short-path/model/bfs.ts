@@ -8,6 +8,10 @@ export const bfs = (fieldsItem: fieldItemModel.FieldItem[][]) => {
 
     const endItem = fieldItemModel.getEndFieldItem(fieldsItem);
 
+    if (startItem == null || endItem == null) {
+        return null;
+    }
+
     const queue: fieldItemModel.FieldItem[] = [startItem];
 
     const passed = new Set([startItem.id]);
@@ -18,6 +22,10 @@ export const bfs = (fieldsItem: fieldItemModel.FieldItem[][]) => {
 
     while (queue.length > 0) {
         const currentFieldItem = queue.shift();
+
+        if (currentFieldItem == null) {
+            break;
+        }
 
         const lastStep = renderingSteps[renderingSteps.length - 1];
 

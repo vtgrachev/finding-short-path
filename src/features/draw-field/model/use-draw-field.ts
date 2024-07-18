@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { drawField } from './draw-field.ts';
 import { fieldItemModel } from '@/entities/field-item';
-import { Simulate } from 'react-dom/test-utils';
-import resize = Simulate.resize;
 
 export const useDrawField = (fieldItems: fieldItemModel.FieldItem[][]) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
@@ -10,14 +8,14 @@ export const useDrawField = (fieldItems: fieldItemModel.FieldItem[][]) => {
     useEffect(() => {
         const canvas = ref.current;
 
-        let frameId;
+        let frameId: number;
 
         if (canvas && fieldItems.length > 0) {
             frameId = requestAnimationFrame(() => drawField(canvas, fieldItems));
         }
 
         return () => {
-            if (frameId) {
+            if (frameId != undefined) {
                 cancelAnimationFrame(frameId);
             }
         };
