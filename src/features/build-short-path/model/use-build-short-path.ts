@@ -30,10 +30,9 @@ export const useBuildShortPath = (
             renderingSteps = dfs(fieldItems);
         } else if (algorithm === 'dijkstra') {
             renderingSteps = dijkstra(fieldItems);
+        } else if (algorithm === 'a-star') {
+            renderingSteps = aStar(fieldItems);
         }
-        // else if (algorithm === 'a-star') {
-        //     aStar(fieldItems);
-        // }
 
         if (renderingSteps !== null) {
             setDrawAlgorithm(true);
