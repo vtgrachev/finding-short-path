@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { drawField } from './draw-field.ts';
 import { fieldItemModel } from '@/entities/field-item';
+import { Simulate } from 'react-dom/test-utils';
+import resize = Simulate.resize;
 
 export const useDrawField = (fieldItems: fieldItemModel.FieldItem[][]) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
@@ -25,12 +27,18 @@ export const useDrawField = (fieldItems: fieldItemModel.FieldItem[][]) => {
         const canvas = ref.current;
 
         return new Promise((resolve) => {
-            requestAnimationFrame(() => {
-                drawField(canvas!, fieldItems);
-                setTimeout(() => {
+            const start = performance.now();
+
+            const draw = (time: DOMHighResTimeStamp) => {
+                if (time - start >= 30) {
+                    drawField(canvas!, fieldItems);
                     resolve();
-                }, 30);
-            });
+                } else {
+                    requestAnimationFrame(draw);
+                }
+            };
+
+            requestAnimationFrame(draw);
         });
     };
 
