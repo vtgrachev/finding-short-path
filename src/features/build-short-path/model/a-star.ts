@@ -87,6 +87,25 @@ export const aStar = (fieldItems: fieldItemModel.FieldItem[][]) => {
             if (lastCost > nextCost) {
                 costItems.set(item.id, nextCost);
             }
+
+            const lastStep = renderingSteps[renderingSteps.length - 1];
+
+            renderingSteps.push(
+                lastStep.map((cols) =>
+                    cols.map((lastItem) => {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        if (item.id === lastItem.id) {
+                            return {
+                                ...lastItem,
+                                isPassed: true,
+                            };
+                        }
+
+                        return { ...lastItem };
+                    }),
+                ),
+            );
         });
 
         let nextItem: fieldItemModel.FieldItem | null = null;
@@ -119,25 +138,6 @@ export const aStar = (fieldItems: fieldItemModel.FieldItem[][]) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             passed.add(nextItem.id);
-
-            const lastStep = renderingSteps[renderingSteps.length - 1];
-
-            renderingSteps.push(
-                lastStep.map((cols) =>
-                    cols.map((item) => {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        if (item.id === nextItem.id) {
-                            return {
-                                ...item,
-                                isPassed: true,
-                            };
-                        }
-
-                        return { ...item };
-                    }),
-                ),
-            );
 
             queue.push(nextItem);
         }
