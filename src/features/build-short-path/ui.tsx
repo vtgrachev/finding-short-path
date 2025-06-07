@@ -25,6 +25,7 @@ export const FormSelectAlgorithm: FunctionComponent<Props> = ({ onSubmit, disabl
                     name="algorithm"
                     options={ALGORITHMS_FIND_SHORT_PATH}
                     required
+                    disabled={disabled}
                 />
             </div>
             <div className="flex gap-2 p-5">

@@ -2,11 +2,14 @@ import { ButtonHTMLAttributes, DetailedHTMLProps, FunctionComponent } from 'reac
 
 export const Button: FunctionComponent<
     DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
-> = ({ className, ...props }) => {
+> = ({ ...attrs }) => {
     return (
-        <button
-            className={`text-sm bg-gray-300 rounded-none p-2 border border-slate-300 hover:border-slate-400 ${className}`}
-            {...props}
-        />
+        <div className="flex justify-center mt-8">
+            <button
+                type="button"
+                className="inline-flex items-center px-4 py-2 text-base font-medium leading-normal text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md shadow-sm transition duration-150 ease-in-out"
+                {...attrs}
+            />
+        </div>
     );
 };

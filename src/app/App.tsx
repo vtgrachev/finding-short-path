@@ -26,25 +26,27 @@ export const App = () => {
 
     return (
         <>
-            <header className="text-lg text-center px-10 py-5">Визуализация алгоритмов поиска кратчайшего пути</header>
-            <main className="px-10 py-5">
-                <section>
-                    <FormSelectFieldSize onSubmit={selectFieldSize} onReset={resetFieldSize} />
-                </section>
+            <header className="bg-gray-100 dark:bg-gray-900 py-4 shadow-md sticky top-0 z-50 flex justify-center">
+                Визуализация алгоритмов поиска кратчайшего пути
+            </header>
+            <main className="container m-auto">
                 {fieldSize > 0 && (
-                    <section className="flex divide-x">
-                        <div className="p-5">
-                            <div className="p-5 text-sm text-center">
-                                Нажмите правой кнопкой на поле для открытия контекстного меню
-                            </div>
+                    <section className="flex flex-col items-center">
+                        <span className="p-5 text-sm text-center block mb-2 font-medium text-gray-900 dark:text-white">
+                            Нажмите правой кнопкой на поле для открытия контекстного меню
+                        </span>
+                        <div className="max-w-[500px]">
                             <FieldCanvas ref={ref} onClick={closeContextMenu} onContextMenu={openContextMenu} />
                             <ContextMenu open={isOpen} {...configMenu} />
                         </div>
-                        <div className="p-5">
-                            <FormSelectAlgorithm onSubmit={buildShortPath} disabled={isDrawAlgorithm} />
-                        </div>
                     </section>
                 )}
+                <section className="flex flex-col">
+                    <FormSelectFieldSize onSubmit={selectFieldSize} onReset={resetFieldSize} />
+                    {fieldSize > 0 && (
+                        <FormSelectAlgorithm onSubmit={buildShortPath} disabled={isDrawAlgorithm || fieldSize === 0} />
+                    )}
+                </section>
             </main>
         </>
     );
