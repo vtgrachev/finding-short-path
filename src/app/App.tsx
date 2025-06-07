@@ -26,7 +26,7 @@ export const App = () => {
 
     return (
         <>
-            <header className="bg-gray-100 dark:bg-gray-900 py-4 shadow-md sticky top-0 z-50 flex justify-center">
+            <header className="bg-gray-100 dark:bg-gray-900 py-4 shadow-md flex justify-center">
                 Визуализация алгоритмов поиска кратчайшего пути
             </header>
             <main className="container m-auto">

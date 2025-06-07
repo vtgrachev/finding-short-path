@@ -20,7 +20,7 @@ export const FieldCanvas = forwardRef<HTMLCanvasElement, Props>(({ onClick, onCo
             height={CANVAS_HEIGHT}
             onClick={onClick}
             onContextMenu={handleContextMenu}
-            className="border-2"
+            className="border-2 box-border"
         />
     );
 });

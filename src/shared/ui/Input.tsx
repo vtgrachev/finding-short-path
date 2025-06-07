@@ -14,7 +14,7 @@ export const Input: FunctionComponent<Props> = ({ label, id, ...attrs }) => {
                 type="text"
                 id={id}
                 {...attrs}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-600 bg-gray-700 dark:text-gray-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
             />
         </div>
     );
