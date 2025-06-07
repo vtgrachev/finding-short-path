@@ -1,12 +1,13 @@
 import { forwardRef, MouseEvent } from 'react';
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from './model/const.ts';
 
 type Props = {
+    width?: number;
+    height?: number;
     onClick?: (event: MouseEvent<HTMLCanvasElement>) => void;
     onContextMenu?: (event: MouseEvent<HTMLCanvasElement>) => void;
 };
 
-export const FieldCanvas = forwardRef<HTMLCanvasElement, Props>(({ onClick, onContextMenu }, ref) => {
+export const FieldCanvas = forwardRef<HTMLCanvasElement, Props>(({ width, height, onClick, onContextMenu }, ref) => {
     const handleContextMenu = (event: MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();
 
@@ -16,11 +17,11 @@ export const FieldCanvas = forwardRef<HTMLCanvasElement, Props>(({ onClick, onCo
     return (
         <canvas
             ref={ref}
-            width={CANVAS_WIDTH}
-            height={CANVAS_HEIGHT}
             onClick={onClick}
             onContextMenu={handleContextMenu}
-            className="border-2 box-border"
+            width={width === 0 ? undefined : width}
+            height={height === 0 ? undefined : height}
+            className="border-2 box-border w-full max-w-[500px] max-h-[500px]"
         />
     );
 });

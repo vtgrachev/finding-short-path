@@ -1,15 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FieldItem, ChangeFieldItem } from './types.ts';
-import { createFieldItems } from './create-field-items.ts';
+import { createFieldItems as createItems } from './create-field-items.ts';
 
-export const useFieldItems = (widthField: number, heightField: number, fieldSize: number) => {
-    const [fieldItems, setFieldItems] = useState<FieldItem[][]>(() =>
-        createFieldItems(widthField, heightField, fieldSize),
-    );
-
-    useEffect(() => {
-        setFieldItems(createFieldItems(widthField, heightField, fieldSize));
-    }, [widthField, heightField, fieldSize]);
+export const useFieldItems = () => {
+    const [fieldItems, setFieldItems] = useState<FieldItem[][]>([]);
 
     const changeFieldItem: ChangeFieldItem = (id: string, change) => {
         setFieldItems((rows) =>
@@ -25,5 +19,9 @@ export const useFieldItems = (widthField: number, heightField: number, fieldSize
         );
     };
 
-    return { fieldItems, changeFieldItem };
+    const createFieldItems = useCallback((widthField: number, heightField: number, fieldSize: number) => {
+        setFieldItems(createItems(widthField, heightField, fieldSize));
+    }, []);
+
+    return { fieldItems, changeFieldItem, createFieldItems };
 };

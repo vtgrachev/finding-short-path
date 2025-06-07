@@ -1,27 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { drawField } from './draw-field.ts';
 import { fieldItemModel } from '@/entities/field-item';
 
-export const useDrawField = (fieldItems: fieldItemModel.FieldItem[][]) => {
+export const useDrawField = () => {
     const ref = useRef<HTMLCanvasElement | null>(null);
 
-    useEffect(() => {
-        const canvas = ref.current;
-
-        let frameId: number;
-
-        if (canvas && fieldItems.length > 0) {
-            frameId = requestAnimationFrame(() => drawField(canvas, fieldItems));
-        }
-
-        return () => {
-            if (frameId != undefined) {
-                cancelAnimationFrame(frameId);
-            }
-        };
-    }, [fieldItems]);
-
-    const drawFieldWithAwait: fieldItemModel.DrawFieldWithAwait = (fieldItems) => {
+    const drawFieldWithAwait: fieldItemModel.DrawFieldWithAwait = useCallback((fieldItems) => {
         const canvas = ref.current;
 
         return new Promise((resolve) => {
@@ -38,7 +22,7 @@ export const useDrawField = (fieldItems: fieldItemModel.FieldItem[][]) => {
 
             requestAnimationFrame(draw);
         });
-    };
+    }, []);
 
-    return { ref, fieldItems, drawFieldWithAwait };
+    return { ref, drawFieldWithAwait };
 };

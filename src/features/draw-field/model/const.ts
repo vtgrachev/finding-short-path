@@ -1,7 +1,3 @@
-export const CANVAS_WIDTH = 500;
-
-export const CANVAS_HEIGHT = 500;
-
 export const DEFAULT_FILL = '#00FF00';
 
 export const PASSED_FILL = '#50A350';

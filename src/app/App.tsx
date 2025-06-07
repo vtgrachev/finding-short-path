@@ -4,17 +4,12 @@ import { fieldContextMenuModel } from '@/features/open-context-menu';
 import { FormSelectAlgorithm, buildShortPathModel } from '@/features/build-short-path';
 import { fieldItemModel } from '@/entities/field-item';
 import { ContextMenu } from '@/shared/ui';
+import { useEffect, useState } from 'react';
 
 export const App = () => {
     const { fieldSize, selectFieldSize, resetFieldSize } = createFormModel.useSelectFieldSize();
-
-    const { fieldItems, changeFieldItem } = fieldItemModel.useFieldItems(
-        drawFieldModel.CANVAS_WIDTH,
-        drawFieldModel.CANVAS_HEIGHT,
-        fieldSize,
-    );
-
-    const { ref, drawFieldWithAwait } = drawFieldModel.useDrawField(fieldItems);
+    const { fieldItems, changeFieldItem, createFieldItems } = fieldItemModel.useFieldItems();
+    const { ref, drawFieldWithAwait } = drawFieldModel.useDrawField();
 
     const {
         configMenu: { isOpen, ...configMenu },
@@ -24,9 +19,27 @@ export const App = () => {
 
     const { buildShortPath, isDrawAlgorithm } = buildShortPathModel.useBuildShortPath(fieldItems, drawFieldWithAwait);
 
+    const [size, setSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+
+    useEffect(() => {
+        if (fieldSize > 0 && ref.current) {
+            const { width } = ref.current.getBoundingClientRect();
+
+            setSize({ width, height: width });
+        }
+    }, [fieldSize, ref]);
+
+    useEffect(() => {
+        createFieldItems(size.width, size.height, fieldSize);
+    }, [createFieldItems, size, fieldSize]);
+
+    useEffect(() => {
+        drawFieldWithAwait(fieldItems);
+    }, [fieldItems, size, drawFieldWithAwait]);
+
     return (
         <>
-            <header className="bg-gray-100 dark:bg-gray-900 py-4 shadow-md flex justify-center">
+            <header className="bg-gray-100 dark:bg-gray-900 py-4 shadow-md flex justify-center text-center">
                 Визуализация алгоритмов поиска кратчайшего пути
             </header>
             <main className="container m-auto">
@@ -35,8 +48,14 @@ export const App = () => {
                         <span className="p-5 text-sm text-center block mb-2 font-medium text-gray-900 dark:text-white">
                             Нажмите правой кнопкой на поле для открытия контекстного меню
                         </span>
-                        <div className="max-w-[500px]">
-                            <FieldCanvas ref={ref} onClick={closeContextMenu} onContextMenu={openContextMenu} />
+                        <div className="max-w-[500px] w-full">
+                            <FieldCanvas
+                                ref={ref}
+                                width={size.width}
+                                height={size.height}
+                                onClick={closeContextMenu}
+                                onContextMenu={openContextMenu}
+                            />
                             <ContextMenu open={isOpen} {...configMenu} />
                         </div>
                     </section>
